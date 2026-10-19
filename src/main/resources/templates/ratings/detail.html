@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${rating.name + ' | CS Staff Ratings'}">Staff rating | CS Staff Ratings</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+<header>
+    <strong>CS Staff Ratings</strong>
+    <nav aria-label="Main navigation">
+        <a th:href="@{/ratings}">Staff directory</a>
+        <a th:href="@{/ratings/new}">Add staff rating</a>
+    </nav>
+</header>
+
+<main id="main" class="container">
+    <h1 th:text="${rating.name}">Staff name</h1>
+    <p class="message" role="status" th:if="${successMessage}"
+       th:text="${successMessage}">Changes saved.</p>
+
+    <section>
+        <h2>Staff details</h2>
+        <dl>
+            <dt>Email</dt>
+            <dd th:text="${rating.email}">staff@example.com</dd>
+            <dt>Role</dt>
+            <dd th:text="${rating.roleType.displayTitle()}">Professor</dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Scores</h2>
+        <table>
+            <caption>All scores are out of 10</caption>
+            <thead>
+            <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Clarity</th>
+                <td th:text="${rating.clarity}">7</td>
+            </tr>
+            <tr>
+                <th scope="row">Niceness</th>
+                <td th:text="${rating.niceness}">8</td>
+            </tr>
+            <tr>
+                <th scope="row">Knowledge</th>
+                <td th:text="${rating.knowledgeableScore}">9</td>
+            </tr>
+            <tr>
+                <th scope="row">Overall score</th>
+                <td th:text="${#numbers.formatDecimal(rating.overallScore, 1, 'NONE', 1, 'POINT')}">8.0</td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="help-text">The overall score is the average of the three scores.</p>
+    </section>
+
+    <section>
+        <h2>Written feedback</h2>
+        <p class="comment-text" th:if="${rating.comment != null}"
+           th:text="${rating.comment}">Written feedback.</p>
+        <p th:if="${rating.comment == null}">No written feedback was added.</p>
+    </section>
+
+    <section>
+        <h2>Record details</h2>
+        <dl>
+            <dt>Rating ID</dt>
+            <dd th:text="|#${rating.id}|">#1</dd>
+            <dt>Role type</dt>
+            <dd th:text="${rating.roleType}">PROF</dd>
+            <dt>Created · UTC</dt>
+            <dd><time th:datetime="${rating.createdAt}" th:text="${rating.createdAt}"></time></dd>
+            <dt>Updated · UTC</dt>
+            <dd><time th:datetime="${rating.updatedAt}" th:text="${rating.updatedAt}"></time></dd>
+        </dl>
+    </section>
+
+    <div class="actions">
+        <a class="button" th:href="@{/ratings/{id}/edit(id=${rating.id})}">Edit rating</a>
+        <a class="button secondary" th:href="@{/ratings}">Back to staff directory</a>
+        <button class="button danger" type="button" data-delete-trigger hidden disabled>Delete rating</button>
+    </div>
+
+    <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+        <h2 id="delete-title">Delete this staff rating?</h2>
+        <p id="delete-description">
+            The rating for <strong th:text="${rating.name}">this staff member</strong>
+            will be permanently deleted, including all scores and written feedback.
+            This cannot be undone.
+        </p>
+        <div class="dialog-actions">
+            <button class="button secondary" type="button" data-close-dialog autofocus disabled>Cancel</button>
+            <form method="post" novalidate data-submit-form
+                  th:action="@{/ratings/{id}/delete(id=${rating.id})}">
+                <button class="button danger" type="submit" data-busy-label="Deleting…">Delete rating</button>
+            </form>
+        </div>
+    </dialog>
+
+    <noscript>
+        <details>
+            <summary>Delete rating</summary>
+            <p th:text="|Permanently delete the rating for ${rating.name}? This cannot be undone.|"></p>
+            <form method="post" novalidate th:action="@{/ratings/{id}/delete(id=${rating.id})}">
+                <button class="button danger" type="submit">Delete rating permanently</button>
+            </form>
+        </details>
+    </noscript>
+</main>
+
+<footer>CMPT 276 — CS Staff Ratings</footer>
+</body>
+</html>

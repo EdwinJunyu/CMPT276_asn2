@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${editing ? 'Edit staff rating | CS Staff Ratings' : 'Add staff rating | CS Staff Ratings'}">
+        Add staff rating | CS Staff Ratings
+    </title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+<header>
+    <strong>CS Staff Ratings</strong>
+    <nav aria-label="Main navigation">
+        <a th:href="@{/ratings}">Staff directory</a>
+        <a th:href="@{/ratings/new}">Add staff rating</a>
+    </nav>
+</header>
+
+<main id="main" class="container">
+    <h1 th:text="${editing ? 'Edit staff rating' : 'Add staff rating'}">Add staff rating</h1>
+    <p>Fields marked with * are required.</p>
+
+    <!-- 新增和编辑共用表单；editing 决定提交地址，th:field 负责填写和回显数据。 -->
+    <form method="post" novalidate data-submit-form data-rating-form
+          th:object="${staffRating}"
+          th:action="${editing} ? @{/ratings/{id}/edit(id=${ratingId})} : @{/ratings}">
+
+        <!-- 校验失败后显示错误汇总，每一项都可以跳到对应输入框。 -->
+        <div class="error-summary" role="alert" tabindex="-1" data-error-summary
+             th:if="${#fields.hasAnyErrors()}">
+            <p><strong>Your rating hasn’t been saved.</strong></p>
+            <p>Check the fields below and try again.</p>
+            <ul>
+                <li th:each="error : ${#fields.detailedErrors()}">
+                    <a th:href="|#${error.fieldName}|" th:text="${error.message}">Correct this field.</a>
+                </li>
+            </ul>
+        </div>
+
+        <section>
+            <h2>Staff details</h2>
+
+            <div class="form-group">
+                <label for="name">Full name *</label>
+                <input type="text" id="name" th:field="*{name}"
+                       maxlength="100" autocomplete="name" required
+                       th:errorclass="input-invalid"
+                       th:aria-invalid="${#fields.hasErrors('name')}"
+                       aria-describedby="name-error">
+                <p class="field-error" id="name-error">
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address *</label>
+                <input type="email" id="email" th:field="*{email}"
+                       maxlength="254" autocomplete="email" required
+                       th:errorclass="input-invalid"
+                       th:aria-invalid="${#fields.hasErrors('email')}"
+                       aria-describedby="email-hint email-error">
+                <p class="help-text" id="email-hint">Each staff member has one unique email.</p>
+                <p class="field-error" id="email-error">
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="roleType">Role *</label>
+                <select id="roleType" th:field="*{roleType}" required
+                        th:errorclass="input-invalid"
+                        th:aria-invalid="${#fields.hasErrors('roleType')}"
+                        aria-describedby="roleType-error">
+                    <option value="">Select a role</option>
+                    <option th:each="role : ${roleTypes}"
+                            th:value="${role}" th:text="${role.displayTitle()}">Professor</option>
+                </select>
+                <p class="field-error" id="roleType-error">
+                    <span th:if="${#fields.hasErrors('roleType')}" th:errors="*{roleType}"></span>
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Scores</h2>
+            <p>Enter a whole number from 1 to 10 for each category.</p>
+
+            <!-- 分数使用文本输入框，abc 等非法内容也能在服务器报错后原样回显。 -->
+            <div class="form-group">
+                <label for="clarity">Clarity *</label>
+                <p class="help-text" id="clarity-hint">How clearly does this staff member explain concepts?</p>
+                <input type="text" id="clarity" th:field="*{clarity}"
+                       inputmode="numeric" required data-score-input
+                       th:errorclass="input-invalid"
+                       th:aria-invalid="${#fields.hasErrors('clarity')}"
+                       aria-describedby="clarity-hint clarity-error">
+                <p class="field-error" id="clarity-error">
+                    <span th:if="${#fields.hasErrors('clarity')}" th:errors="*{clarity}"></span>
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="niceness">Niceness *</label>
+                <p class="help-text" id="niceness-hint">How approachable and helpful is this staff member?</p>
+                <input type="text" id="niceness" th:field="*{niceness}"
+                       inputmode="numeric" required data-score-input
+                       th:errorclass="input-invalid"
+                       th:aria-invalid="${#fields.hasErrors('niceness')}"
+                       aria-describedby="niceness-hint niceness-error">
+                <p class="field-error" id="niceness-error">
+                    <span th:if="${#fields.hasErrors('niceness')}" th:errors="*{niceness}"></span>
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="knowledgeableScore">Knowledge *</label>
+                <p class="help-text" id="knowledgeableScore-hint">How well does this staff member know the subject?</p>
+                <input type="text" id="knowledgeableScore" th:field="*{knowledgeableScore}"
+                       inputmode="numeric" required data-score-input
+                       th:errorclass="input-invalid"
+                       th:aria-invalid="${#fields.hasErrors('knowledgeableScore')}"
+                       aria-describedby="knowledgeableScore-hint knowledgeableScore-error">
+                <p class="field-error" id="knowledgeableScore-error">
+                    <span th:if="${#fields.hasErrors('knowledgeableScore')}" th:errors="*{knowledgeableScore}"></span>
+                </p>
+            </div>
+
+            <p class="score-preview">
+                Overall score preview: <strong data-overall-preview>—</strong> / 10
+            </p>
+            <p class="help-text">The average appears after all three scores are filled in.</p>
+        </section>
+
+        <section>
+            <h2>Written feedback</h2>
+            <div class="form-group">
+                <label for="comment">Your comments (optional)</label>
+                <textarea id="comment" th:field="*{comment}" rows="5" maxlength="500"
+                          class="resize-none" th:errorclass="input-invalid"
+                          th:aria-invalid="${#fields.hasErrors('comment')}"
+                          aria-describedby="comment-hint comment-error"></textarea>
+                <p class="help-text" id="comment-hint">
+                    Keep it constructive. Up to 500 characters.
+                    <span data-comment-count></span>
+                </p>
+                <p class="field-error" id="comment-error">
+                    <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></span>
+                </p>
+            </div>
+        </section>
+
+        <div class="actions">
+            <button class="button" type="submit" data-busy-label="Saving…"
+                    th:text="${editing ? 'Save changes' : 'Add staff rating'}">Add staff rating</button>
+            <a class="button secondary"
+               th:href="${editing} ? @{/ratings/{id}(id=${ratingId})} : @{/ratings}">Cancel</a>
+        </div>
+    </form>
+
+    <dialog id="discard-dialog" aria-labelledby="discard-title" aria-describedby="discard-description">
+        <h2 id="discard-title">Leave without saving?</h2>
+        <p id="discard-description">Your changes haven’t been saved. If you leave this page, they will be lost.</p>
+        <div class="dialog-actions">
+            <button class="button secondary" type="button" data-close-dialog autofocus disabled>Keep editing</button>
+            <button class="button danger" type="button" data-discard disabled>Discard changes</button>
+        </div>
+    </dialog>
+</main>
+
+<footer>CMPT 276 — CS Staff Ratings</footer>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Staff directory | CS Staff Ratings</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+<header>
+    <strong>CS Staff Ratings</strong>
+    <nav aria-label="Main navigation">
+        <a th:href="@{/ratings}">Staff directory</a>
+        <a th:href="@{/ratings/new}">Add staff rating</a>
+    </nav>
+</header>
+
+<main id="main" class="container">
+    <h1>Rate CS Teaching Staff</h1>
+    <p>Browse, add, and edit ratings for professors and teaching assistants.</p>
+    <p>Overall score = (Clarity + Niceness + Knowledge) / 3.</p>
+
+    <!-- Flash 提示在新增、修改或删除成功后显示。 -->
+    <p class="message" role="status" th:if="${successMessage}"
+       th:text="${successMessage}">Changes saved.</p>
+
+    <p><a class="button" th:href="@{/ratings/new}">Add staff rating</a></p>
+
+    <!-- 没有记录时显示空列表提示。 -->
+    <div th:if="${#lists.isEmpty(ratings)}">
+        <h2>No staff ratings yet.</h2>
+        <p><a th:href="@{/ratings/new}">Add the first rating</a></p>
+    </div>
+
+    <!-- th:each 为每条评分生成一行，所有属性名都直接写出来。 -->
+    <div class="table-scroll" th:unless="${#lists.isEmpty(ratings)}"
+         role="region" aria-label="Staff ratings" tabindex="0">
+        <table class="staff-table">
+            <caption>All staff ratings, newest added first</caption>
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Overall score</th>
+                <th scope="col">Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rating : ${ratings}">
+                <td th:text="${rating.name}">Staff name</td>
+                <td th:text="${rating.email}">staff@example.com</td>
+                <td th:text="${rating.roleType.displayTitle()}">Professor</td>
+                <td>
+                    <!-- 平均分由后端计算，这里只保留一位小数。 -->
+                    <span th:text="${#numbers.formatDecimal(rating.overallScore, 1, 'NONE', 1, 'POINT')}">8.0</span>
+                    / 10
+                </td>
+                <td>
+                    <a th:href="@{/ratings/{id}(id=${rating.id})}"
+                       th:aria-label="|View rating for ${rating.name}|">View rating</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p th:text="|${#lists.size(ratings)} staff ${#lists.size(ratings) == 1 ? 'rating' : 'ratings'}|">
+        0 staff ratings
+    </p>
+    <p class="help-text">Each staff member has one rating, identified by their email.</p>
+</main>
+
+<footer>CMPT 276 — CS Staff Ratings</footer>
+</body>
+</html>

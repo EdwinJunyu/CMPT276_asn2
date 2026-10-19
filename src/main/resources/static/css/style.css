@@ -1,0 +1,296 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #222222;
+    background-color: #f4f4f4;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #cccccc;
+}
+
+nav {
+    margin-top: 8px;
+}
+
+nav a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 4px 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 24px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 28px;
+    overflow-wrap: break-word;
+}
+
+h2 {
+    margin-top: 28px;
+    padding-bottom: 8px;
+    font-size: 21px;
+    border-bottom: 1px solid #dddddd;
+}
+
+p {
+    margin: 12px 0;
+}
+
+a {
+    color: #244f86;
+    cursor: pointer;
+}
+
+a:hover {
+    color: #8f1c2c;
+}
+
+a:focus, button:focus, input:focus, select:focus, textarea:focus, summary:focus {
+    outline: 2px solid #244f86;
+    outline-offset: 3px;
+}
+
+.table-scroll {
+    overflow: auto;
+    max-height: 500px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.staff-table {
+    min-width: 650px;
+}
+
+.staff-table th, .staff-table td {
+    white-space: nowrap;
+}
+
+caption {
+    margin-bottom: 10px;
+    text-align: left;
+    color: #555555;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #cccccc;
+    overflow-wrap: break-word;
+}
+
+thead {
+    background-color: #eeeeee;
+}
+
+.form-group {
+    margin: 18px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    font: inherit;
+    color: #222222;
+    background-color: #ffffff;
+    border: 1px solid #888888;
+    border-radius: 4px;
+}
+
+textarea {
+    min-height: 130px;
+    resize: none;
+}
+
+.help-text {
+    margin: 6px 0;
+    color: #555555;
+    font-size: 14px;
+}
+
+.field-error {
+    min-height: 24px;
+    margin: 4px 0;
+    color: #a00020;
+    font-size: 14px;
+}
+
+.input-invalid {
+    border-color: #a00020;
+    background-color: #fff6f6;
+}
+
+.error-summary {
+    padding: 12px 18px;
+    color: #a00020;
+    background-color: #fff6f6;
+    border: 1px solid #a00020;
+}
+
+.message {
+    padding: 12px;
+    color: #24563a;
+    background-color: #edf7ef;
+    border: 1px solid #8da995;
+}
+
+.score-preview {
+    padding: 12px;
+    background-color: #eeeeee;
+}
+
+.comment-text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+dt {
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+dd {
+    margin: 4px 0;
+    overflow-wrap: break-word;
+}
+
+.button {
+    display: inline-block;
+    margin: 4px 8px 4px 0;
+    padding: 10px 16px;
+    font: inherit;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #8f1c2c;
+    border: 1px solid #8f1c2c;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    color: #ffffff;
+    background-color: #701624;
+}
+
+.button:active {
+    background-color: #57111b;
+}
+
+.secondary {
+    color: #222222;
+    background-color: #eeeeee;
+    border-color: #aaaaaa;
+}
+
+.secondary:hover {
+    color: #222222;
+    background-color: #dddddd;
+}
+
+.secondary:active {
+    background-color: #cccccc;
+}
+
+button[type="submit"] {
+    min-width: 150px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button[hidden] {
+    display: none;
+}
+
+.actions {
+    margin-top: 24px;
+}
+
+dialog {
+    width: 420px;
+    max-width: 90%;
+    max-height: 90%;
+    padding: 24px;
+    overflow: auto;
+    color: #222222;
+    background-color: #ffffff;
+    border: 1px solid #888888;
+    border-radius: 4px;
+}
+
+dialog h2 {
+    margin-top: 0;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.dialog-actions form {
+    margin: 0;
+}
+
+details {
+    margin-top: 20px;
+}
+
+summary {
+    cursor: pointer;
+}
+
+footer {
+    padding: 20px;
+    text-align: center;
+    color: #555555;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin: 12px;
+        padding: 16px;
+    }
+
+    header {
+        padding: 16px;
+    }
+}

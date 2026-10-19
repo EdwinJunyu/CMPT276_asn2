@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rating not found | CS Staff Ratings</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <strong>CS Staff Ratings</strong>
+    <nav aria-label="Main navigation">
+        <a th:href="@{/ratings}">Staff directory</a>
+        <a th:href="@{/ratings/new}">Add staff rating</a>
+    </nav>
+</header>
+
+<main id="main" class="container">
+    <h1>404 — Rating not found.</h1>
+    <p>This rating may have been deleted, or the link may be incorrect.</p>
+    <a class="button" th:href="@{/ratings}">Back to staff directory</a>
+</main>
+
+<footer>CMPT 276 — CS Staff Ratings</footer>
+</body>
+</html>
